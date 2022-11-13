@@ -1,4 +1,4 @@
-package id.dipoengoro.tryimagesearch
+package id.dipoengoro.tryimagesearch.data
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
