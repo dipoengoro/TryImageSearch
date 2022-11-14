@@ -24,7 +24,10 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
         binding.apply {
             recyclerViewSearch.setHasFixedSize(true)
-            recyclerViewSearch.adapter = adapter
+            recyclerViewSearch.adapter = adapter.withLoadStateHeaderAndFooter(
+                header = UnsplashPhotoLoadStateAdapter { adapter.retry() },
+                footer = UnsplashPhotoLoadStateAdapter { adapter.retry() }
+            )
         }
         viewModel.photos.observe(viewLifecycleOwner) {
             adapter.submitData(viewLifecycleOwner.lifecycle, it)
