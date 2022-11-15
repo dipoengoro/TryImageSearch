@@ -5,6 +5,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.core.view.MenuHost
@@ -27,6 +28,7 @@ class SearchFragment : Fragment(R.layout.fragment_search),
     private val viewModel by viewModels<SearchViewModel>()
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
+    private var currentQuery: String? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -41,6 +43,19 @@ class SearchFragment : Fragment(R.layout.fragment_search),
                 menuInflater.inflate(R.menu.menu_search, menu)
                 val searchItem = menu.findItem(R.id.action_search)
                 val searchView = searchItem.actionView as SearchView
+
+                menu.findItem(R.id.action_search)
+                    .setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
+                        override fun onMenuItemActionExpand(item: MenuItem): Boolean {
+                            searchView.apply {
+                                onActionViewExpanded()
+                                setQuery(currentQuery, false)
+                            }
+                            return true
+                        }
+
+                        override fun onMenuItemActionCollapse(item: MenuItem) = true
+                    })
 
                 searchView.setOnQueryTextListener(object : OnQueryTextListener {
                     override fun onQueryTextSubmit(query: String?): Boolean {
@@ -81,7 +96,14 @@ class SearchFragment : Fragment(R.layout.fragment_search),
         }
 
         viewModel.currentQuery.observe(viewLifecycleOwner) {
-            binding.textOpeningSearch.isVisible = it == null
+            (it == null).let { isNull ->
+                binding.textOpeningSearch.isVisible = isNull
+                if (!isNull) {
+                    (requireActivity() as AppCompatActivity).supportActionBar?.title =
+                        getString(R.string.gallery)
+                }
+            }
+            currentQuery = it
         }
 
         adapter.addLoadStateListener { loadState ->
