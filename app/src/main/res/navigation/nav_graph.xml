@@ -7,8 +7,8 @@
     <fragment
         android:id="@+id/searchFragment"
         android:name="id.dipoengoro.tryimagesearch.ui.search.SearchFragment"
-        android:label="fragment_search"
-        tools:layout="@layout/fragment_search" >
+        android:label="@string/gallery"
+        tools:layout="@layout/fragment_search">
         <action
             android:id="@+id/action_searchFragment_to_detailFragment"
             app:destination="@id/detailFragment" />
@@ -16,10 +16,13 @@
     <fragment
         android:id="@+id/detailFragment"
         android:name="id.dipoengoro.tryimagesearch.ui.detail.DetailFragment"
-        android:label="fragment_detail"
-        tools:layout="@layout/fragment_detail" >
+        android:label="{username}"
+        tools:layout="@layout/fragment_detail">
         <argument
-            android:name="photo "
+            android:name="photo"
             app:argType="id.dipoengoro.tryimagesearch.data.UnsplashPhoto" />
+        <argument
+            android:name="username"
+            app:argType="string" />
     </fragment>
 </navigation>

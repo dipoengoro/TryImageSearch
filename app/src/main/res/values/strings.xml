@@ -4,4 +4,6 @@
     <string name="retry_prompt">Result could not be loaded</string>
     <string name="empty_search">No results found for this query</string>
     <string name="search">Search</string>
+    <string name="gallery">Gallery</string>
+    <string name="attribution">Photo by %1$s on Unsplash</string>
 </resources>

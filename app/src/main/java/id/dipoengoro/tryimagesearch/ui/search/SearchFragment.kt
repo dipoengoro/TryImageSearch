@@ -98,7 +98,10 @@ class SearchFragment : Fragment(R.layout.fragment_search),
     }
 
     override fun onItemClick(photo: UnsplashPhoto) {
-        val action = SearchFragmentDirections.actionSearchFragmentToDetailFragment(photo)
+        val action = SearchFragmentDirections.actionSearchFragmentToDetailFragment(
+            photo,
+            photo.user.username
+        )
         findNavController().navigate(action)
     }
 
