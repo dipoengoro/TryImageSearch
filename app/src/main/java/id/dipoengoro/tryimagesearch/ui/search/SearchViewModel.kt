@@ -1,27 +1,28 @@
 package id.dipoengoro.tryimagesearch.ui.search
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.switchMap
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import id.dipoengoro.tryimagesearch.data.UnsplashRepository
 import javax.inject.Inject
 
 @HiltViewModel
-class SearchViewModel @Inject  constructor(private val repository: UnsplashRepository) :
-    ViewModel() {
-    private val currentQuery = MutableLiveData(DEFAULT_QUERY)
-    val photos = currentQuery.switchMap {
+class SearchViewModel @Inject constructor(
+    private val repository: UnsplashRepository,
+    state: SavedStateHandle
+) : ViewModel() {
+    private val _currentQuery = state.getLiveData<String>(CURRENT_QUERY)
+    val currentQuery get() = _currentQuery
+
+    val photos = _currentQuery.switchMap {
         repository.getSearchResult(it).cachedIn(viewModelScope)
     }
 
     fun searchPhotos(query: String) {
-        currentQuery.value = query
+        _currentQuery.value = query
     }
 
     companion object {
-        private const val DEFAULT_QUERY = "animals"
+        private const val CURRENT_QUERY = "current_query"
     }
 }

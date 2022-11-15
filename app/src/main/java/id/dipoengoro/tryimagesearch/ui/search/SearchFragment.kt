@@ -80,6 +80,10 @@ class SearchFragment : Fragment(R.layout.fragment_search),
             adapter.submitData(viewLifecycleOwner.lifecycle, it)
         }
 
+        viewModel.currentQuery.observe(viewLifecycleOwner) {
+            binding.textOpeningSearch.isVisible = it == null
+        }
+
         adapter.addLoadStateListener { loadState ->
             binding.apply {
                 progressSearch.isVisible = loadState.source.refresh is LoadState.Loading

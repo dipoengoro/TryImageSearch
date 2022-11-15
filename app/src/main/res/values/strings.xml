@@ -6,4 +6,5 @@
     <string name="search">Search</string>
     <string name="gallery">Gallery</string>
     <string name="attribution">Photo by %1$s on Unsplash</string>
+    <string name="opening">Click 🔎 to start</string>
 </resources>
