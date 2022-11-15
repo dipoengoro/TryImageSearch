@@ -13,13 +13,16 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import dagger.hilt.android.AndroidEntryPoint
 import id.dipoengoro.tryimagesearch.R
+import id.dipoengoro.tryimagesearch.data.UnsplashPhoto
 import id.dipoengoro.tryimagesearch.databinding.FragmentSearchBinding
 
 @AndroidEntryPoint
-class SearchFragment : Fragment(R.layout.fragment_search) {
+class SearchFragment : Fragment(R.layout.fragment_search),
+    UnsplashPhotoAdapter.OnItemClickListener {
 
     private val viewModel by viewModels<SearchViewModel>()
     private var _binding: FragmentSearchBinding? = null
@@ -29,7 +32,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentSearchBinding.bind(view)
 
-        val adapter = UnsplashPhotoAdapter()
+        val adapter = UnsplashPhotoAdapter(this)
 
         val menuHost: MenuHost = requireActivity()
 
@@ -92,6 +95,11 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                 }
             }
         }
+    }
+
+    override fun onItemClick(photo: UnsplashPhoto) {
+        val action = SearchFragmentDirections.actionSearchFragmentToDetailFragment(photo)
+        findNavController().navigate(action)
     }
 
     override fun onDestroyView() {

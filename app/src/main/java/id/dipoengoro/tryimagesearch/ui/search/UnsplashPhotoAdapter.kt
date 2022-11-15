@@ -11,7 +11,7 @@ import id.dipoengoro.tryimagesearch.R
 import id.dipoengoro.tryimagesearch.data.UnsplashPhoto
 import id.dipoengoro.tryimagesearch.databinding.ItemPhotoBinding
 
-class UnsplashPhotoAdapter :
+class UnsplashPhotoAdapter(private val listener: OnItemClickListener) :
     PagingDataAdapter<UnsplashPhoto, UnsplashPhotoAdapter.PhotoViewHolder>(PHOTO_COMPARATOR) {
 
     override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) = getItem(position).let {
@@ -20,10 +20,28 @@ class UnsplashPhotoAdapter :
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = PhotoViewHolder.from(parent)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = PhotoViewHolder(
+        ItemPhotoBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+    )
 
-    class PhotoViewHolder(private val binding: ItemPhotoBinding) :
+    inner class PhotoViewHolder(private val binding: ItemPhotoBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
+        init {
+            binding.root.setOnClickListener {
+                val position = bindingAdapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    val item = getItem(position)
+                    if (item != null) {
+                        listener.onItemClick(item)
+                    }
+                }
+            }
+        }
 
         fun bind(photo: UnsplashPhoto) {
             binding.apply {
@@ -37,18 +55,10 @@ class UnsplashPhotoAdapter :
                 textUsernameItem.text = photo.user.username
             }
         }
+    }
 
-        companion object {
-            fun from(parent: ViewGroup): PhotoViewHolder {
-                return PhotoViewHolder(
-                    ItemPhotoBinding.inflate(
-                        LayoutInflater.from(parent.context),
-                        parent,
-                        false
-                    )
-                )
-            }
-        }
+    interface OnItemClickListener {
+        fun onItemClick(photo: UnsplashPhoto)
     }
 
     companion object {

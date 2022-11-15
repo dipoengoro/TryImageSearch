@@ -8,5 +8,18 @@
         android:id="@+id/searchFragment"
         android:name="id.dipoengoro.tryimagesearch.ui.search.SearchFragment"
         android:label="fragment_search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_searchFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="id.dipoengoro.tryimagesearch.ui.detail.DetailFragment"
+        android:label="fragment_detail"
+        tools:layout="@layout/fragment_detail" >
+        <argument
+            android:name="photo "
+            app:argType="id.dipoengoro.tryimagesearch.data.UnsplashPhoto" />
+    </fragment>
 </navigation>
